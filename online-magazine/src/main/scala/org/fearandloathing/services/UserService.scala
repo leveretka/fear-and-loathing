@@ -8,9 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.{PostAuthorize, PreAuthorize}
 import org.springframework.stereotype.Service
 
-@Service
-class UserService(@Autowired private val userRepository: UserRepository) {
+trait UserService {
 
+  def listUsers(): Iterable[Users]
+
+  def getUser(id: Long): Users
+
+  def getUserByName(name: String): Users
+
+  def createUser(users: Users): Long
+}
+
+@Service
+class UserServiceImpl(@Autowired private val userRepository: UserRepository) extends UserService {
   @PreAuthorize("hasRole('admin')")
   def listUsers(): Iterable[Users] = {
     userRepository.findAll.asScala
@@ -22,10 +32,14 @@ class UserService(@Autowired private val userRepository: UserRepository) {
     userRepository.findOne(id)
   }
 
+  @PreAuthorize("hasRole('user')")
+  def getUserByName(name: String): Users = {
+    userRepository.findUserByUsername(name)
+  }
+
   @PreAuthorize("hasRole('admin')")
   def createUser(users: Users): Long = {
     userRepository.save(users)
     users.id
   }
-
 }

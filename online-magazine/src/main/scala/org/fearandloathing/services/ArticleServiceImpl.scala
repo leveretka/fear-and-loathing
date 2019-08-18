@@ -11,10 +11,13 @@ import scala.collection.JavaConverters._
 trait ArticleService {
   def listArticles(): Iterable[Articles]
   def getArticle(id: Long): Articles
+  def createArticle(article: Articles): Long
+  def allArticlesOfUser(userId: Long): Iterable[Articles]
+  def searchArticles(title: String): Iterable[Articles]
 }
 
 @Service
-class ArticleServiceImpl(@Autowired private val articleRepository: ArticleRepository) {
+class ArticleServiceImpl(@Autowired private val articleRepository: ArticleRepository) extends ArticleService {
 
   @PreAuthorize("hasRole('user')")
   def listArticles(): Iterable[Articles] = {

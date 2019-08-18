@@ -3,17 +3,19 @@ package org.fearandloathing.controllers
 import java.lang.Iterable
 
 import collection.JavaConverters._
-
 import javax.sql.DataSource
 import org.fearandloathing.entity.Articles
-import org.fearandloathing.services.ArticleServiceImpl
+import org.fearandloathing.services.{ArticleService, UserService}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpHeaders, HttpStatus, ResponseEntity}
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.{GetMapping, PathVariable, PostMapping, RequestBody, RequestMapping, RequestParam, RestController}
 
 @RestController
 @RequestMapping(path = Array("/api"))
-class ArticleController (@Autowired private val articleService: ArticleServiceImpl, @Autowired private val dataSource: DataSource) {
+class ArticleController (@Autowired private val articleService: ArticleService,
+                         @Autowired private val userService: UserService,
+                         @Autowired private val dataSource: DataSource) {
 
   @GetMapping(path = Array("/articles"))
   def getAllArticle(@RequestParam(required = false) author: String,
@@ -48,9 +50,11 @@ class ArticleController (@Autowired private val articleService: ArticleServiceIm
   }
 
   @PostMapping(path = Array("/articles"))
-  def createArticle(@RequestBody articles: Articles): ResponseEntity[Long] = {
+  def createArticle(@RequestBody articles: Articles, authentication: Authentication): ResponseEntity[Long] = {
+    val name = authentication.getName
+    val userId = userService.getUserByName(name).id
+    articles.setAuthor(userId)
     val id = articleService.createArticle(articles)
     new ResponseEntity(id, new HttpHeaders, HttpStatus.CREATED)
   }
-
 }
