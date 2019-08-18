@@ -2,6 +2,8 @@ package org.fearandloathing.dto
 
 import org.fearandloathing.entity.{Articles, Users}
 
+import scala.beans.BeanProperty
+
 trait Convertable[A,B] {
   def convert(a: A): B
 }
@@ -44,5 +46,12 @@ object Convertable {
     }
 }
 
-case class User(id: Long, username: String, password: String, enabled: Boolean)
-case class Article(id: Long, title: String, body: String, author: Long)
+case class User(@BeanProperty id: Long,
+                @BeanProperty username: String,
+                @BeanProperty password: String,
+                @BeanProperty enabled: Boolean)
+
+case class Article(@BeanProperty id: Long,
+                   @BeanProperty title: String,
+                   @BeanProperty body: String,
+                   @BeanProperty author: Long)
