@@ -1,45 +1,46 @@
 package org.fearandloathing.services
 
-import collection.JavaConverters._
-
-import org.fearandloathing.entity.Users
+import org.fearandloathing.dto.Convertable._
+import org.fearandloathing.dto.User
 import org.fearandloathing.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.{PostAuthorize, PreAuthorize}
 import org.springframework.stereotype.Service
 
+import scala.collection.JavaConverters._
+
 trait UserService {
 
-  def listUsers(): Iterable[Users]
+  def listUsers(): Iterable[User]
 
-  def getUser(id: Long): Users
+  def getUser(id: Long): User
 
-  def getUserByName(name: String): Users
+  def getUserByName(name: String): User
 
-  def createUser(users: Users): Long
+  def createUser(users: User): Long
 }
 
 @Service
 class UserServiceImpl(@Autowired private val userRepository: UserRepository) extends UserService {
   @PreAuthorize("hasRole('admin')")
-  def listUsers(): Iterable[Users] = {
-    userRepository.findAll.asScala
+  def listUsers(): Iterable[User] = {
+    userRepository.findAll.asScala.map(convert(_))
   }
 
   @PreAuthorize("hasRole('user')")
   @PostAuthorize("returnObject.username==principal.username || hasRole('admin')")
-  def getUser(id: Long): Users = {
-    userRepository.findOne(id)
+  def getUser(id: Long): User = {
+    convert(userRepository.findOne(id))
   }
 
   @PreAuthorize("hasRole('user')")
-  def getUserByName(name: String): Users = {
-    userRepository.findUserByUsername(name)
+  def getUserByName(name: String): User = {
+    convert(userRepository.findUserByUsername(name))
   }
 
   @PreAuthorize("hasRole('admin')")
-  def createUser(users: Users): Long = {
-    userRepository.save(users)
+  def createUser(user: User): Long = {
+    val users = userRepository.save(convert(user))
     users.id
   }
 }
