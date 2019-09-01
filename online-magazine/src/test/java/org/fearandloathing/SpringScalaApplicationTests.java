@@ -1,4 +1,4 @@
-package org.springScala;
+package org.fearandloathing;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

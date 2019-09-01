@@ -1,6 +1,6 @@
 package org.fearandloathing.dto
 
-import org.fearandloathing.entity.{Articles, Users}
+import org.fearandloathing.entity.{Articles, Comments, Users}
 
 import scala.beans.BeanProperty
 
@@ -35,6 +35,18 @@ object Convertable {
       }
     }
 
+  implicit val convertCommentDto: Convertable[Comment, Comments] =
+    new Convertable[Comment, Comments] {
+      def convert(c: Comment): Comments = {
+        val comments = new Comments()
+        comments.setId(c.id)
+        comments.setArticle(c.article)
+        comments.setBody(c.body)
+        comments.setAuthor(c.author)
+        comments
+      }
+    }
+
   implicit val convertUserEntity: Convertable[Users, User] =
     new Convertable[Users, User] {
       def convert(u: Users): User = User(u.id, u.username, u.password, u.enabled)
@@ -43,6 +55,11 @@ object Convertable {
   implicit val convertArticleEntity: Convertable[Articles, Article] =
     new Convertable[Articles, Article] {
       def convert(a: Articles): Article = Article(a.id, a.title, a.body, a.author)
+    }
+
+  implicit val convertCommentEntity: Convertable[Comments, Comment] =
+    new Convertable[Comments, Comment] {
+      def convert(c: Comments): Comment = Comment(c.getId, c.getArticle, c.getBody, c.getAuthor)
     }
 }
 
@@ -53,5 +70,10 @@ case class User(@BeanProperty id: Long,
 
 case class Article(@BeanProperty id: Long,
                    @BeanProperty title: String,
+                   @BeanProperty body: String,
+                   @BeanProperty author: Long)
+
+case class Comment(@BeanProperty id: Long,
+                   @BeanProperty article: Long,
                    @BeanProperty body: String,
                    @BeanProperty author: Long)
