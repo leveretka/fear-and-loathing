@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS comments;
+
 CREATE TABLE authorities (id bigint auto_increment not null, username varchar_ignorecase(50) not null, authority varchar_ignorecase(50) not null, constraint fk_authorities_users foreign key(username) references users(username));
 CREATE TABLE articles (id bigint auto_increment not null, title varchar(50) not null, body varchar(1000) not null, author bigint not null, constraint fk_articles_users foreign key(author) references users(id));
 CREATE TABLE comments (id bigint auto_increment not null, article bigint not null, body varchar(1000) not null, author bigint not null, constraint fk_comments_users foreign key(author) references users(id), constraint fk_comments_articles foreign key(article) references articles(id));

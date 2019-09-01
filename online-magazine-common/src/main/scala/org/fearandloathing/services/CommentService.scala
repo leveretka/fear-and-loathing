@@ -1,6 +1,7 @@
 package org.fearandloathing.services
 
 import org.fearandloathing.dto.Comment
+import java.lang.Iterable
 
 trait CommentService {
     def listComments(): Iterable[Comment]
