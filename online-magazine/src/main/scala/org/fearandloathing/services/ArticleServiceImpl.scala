@@ -9,14 +9,6 @@ import org.springframework.stereotype.Service
 
 import scala.collection.JavaConverters._
 
-trait ArticleService {
-  def listArticles(): Iterable[Article]
-  def getArticle(id: Long): Article
-  def createArticle(article: Article): Long
-  def allArticlesOfUser(userId: Long): Iterable[Article]
-  def searchArticles(title: String): Iterable[Article]
-}
-
 @Service
 class ArticleServiceImpl(@Autowired private val articleRepository: ArticleRepository) extends ArticleService {
 

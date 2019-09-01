@@ -9,17 +9,6 @@ import org.springframework.stereotype.Service
 
 import scala.collection.JavaConverters._
 
-trait UserService {
-
-  def listUsers(): Iterable[User]
-
-  def getUser(id: Long): User
-
-  def getUserByName(name: String): User
-
-  def createUser(users: User): Long
-}
-
 @Service
 class UserServiceImpl(@Autowired private val userRepository: UserRepository) extends UserService {
   @PreAuthorize("hasRole('admin')")

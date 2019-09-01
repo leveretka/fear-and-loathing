@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.fearandloathing</groupId>
-    <artifactId>online-magazine</artifactId>
+    <artifactId>online-magazine-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>online-magazine</name>
+    <name>online-magazine-server</name>
     <description>Online Magazine</description>
 
     <parent>
@@ -84,6 +84,16 @@
             <artifactId>online-magazine-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.fearandloathing</groupId>
+            <artifactId>online-magazine-kotlin</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        <groupId>org.fearandloathing</groupId>
+        <artifactId>online-magazine</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
     </dependencies>
 
     <build>
@@ -136,6 +146,10 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

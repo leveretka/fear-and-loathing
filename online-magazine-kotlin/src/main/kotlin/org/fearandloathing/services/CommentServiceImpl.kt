@@ -1,18 +1,11 @@
 package org.fearandloathing.services
 
 import org.fearandloathing.dto.Comment
-import org.fearandloathing.dto.`Convertable$`
 import org.fearandloathing.repositories.CommentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-interface CommentService {
-    fun listComments(): Iterable<Comment>
-    fun getComment(id: Long): Comment
-    fun createComment(article: Comment): Long
-    fun allCommentsOfUser(userId: Long): Iterable<Comment>
-    fun searchComments(title: String): Iterable<Comment>
-}
+import scala.collection.Iterable
 
 @Service
 class CommentServiceImpl(@Autowired private val commentRepository: CommentRepository): CommentService {

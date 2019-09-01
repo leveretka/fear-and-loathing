@@ -13,6 +13,9 @@
 
 	<modules>
 		<module>online-magazine</module>
+        <module>online-magazine-kotlin</module>
+		<module>online-magazine-common</module>
+		<module>online-magazine-server</module>
 	</modules>
 
 
