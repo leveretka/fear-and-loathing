@@ -38,7 +38,8 @@ class CommentController (@Autowired private val commentService: CommentService,
     @PostMapping(path = ["/comments"])
     fun addComment(@RequestBody comment: Comment, authentication: Authentication): ResponseEntity<Long> {
         val userId = userService.getUserByName(authentication.name).id
-        val id = commentService.createComment(Comment(comment.id, comment.article, comment.body, userId))
+        val copiedComment = comment.`$tilde$tilde$tilde`(userId)
+        val id = commentService.createComment(copiedComment)
         return ResponseEntity(id, HttpHeaders(), HttpStatus.CREATED)
     }
 }

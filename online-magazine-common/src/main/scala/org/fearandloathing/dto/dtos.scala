@@ -76,4 +76,27 @@ case class Article(@BeanProperty id: Long,
 case class Comment(@BeanProperty id: Long,
                    @BeanProperty article: Long,
                    @BeanProperty body: String,
-                   @BeanProperty author: Long)
+                   @BeanProperty author: Long) {
+
+  def ~~~ (author: Long): Comment =
+    this.copy(author = author)
+
+}
+
+class ExtendedComment extends Comment(0,0,"", 0)
+
+class CommentContainer[C <: Comment](c: C) {
+  def comment: C = c
+}
+
+trait A {
+  def a(): String
+}
+
+class SuperExtendedComment extends Comment(0,0,"", 0) with A {
+  override def a(): String = "aaa"
+}
+
+object SuperExtendedComment {
+  val x = "XXX"
+}
