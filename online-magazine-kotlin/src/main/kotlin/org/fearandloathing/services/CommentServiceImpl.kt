@@ -26,10 +26,11 @@ class CommentServiceImpl(@Autowired private val commentRepository: CommentReposi
         commentRepository.findCommentsByAuthor(userId).map { toCommentDto(it) }
 
     override fun searchComments(title: String): Iterable<Comment> {
-        val articles = asJavaIterableConverter(articleService.searchArticles(title)).asJava()
+        val article = articleService.searchArticles(title).find {it.title == title}
+        //val articles = asJavaIterableConverter(articleService.searchArticles(title)).asJava()
 
         return commentRepository.findCommentsByArticle(
-                articles.find { it.title == title }?.id ?: 0
+                article.map { it.id }.getOrElse { 0L }
         ).map { toCommentDto(it) }
     }
 

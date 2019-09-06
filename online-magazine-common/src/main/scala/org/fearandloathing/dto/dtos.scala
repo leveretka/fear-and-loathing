@@ -81,6 +81,9 @@ case class Comment(@BeanProperty id: Long,
   def ~~~ (author: Long): Comment =
     this.copy(author = author)
 
+  def plus(comment: Comment): Comment =
+    Comment(id, article, body + comment.body, author)
+
 }
 
 class ExtendedComment extends Comment(0,0,"", 0)

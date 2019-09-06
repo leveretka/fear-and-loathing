@@ -21,4 +21,13 @@ fun main() {
    `SuperExtendedComment$`.`MODULE$`.x()
 
     superExtendedComment.print()
+
+    val c1 = Comment(1,1, "A", 1)
+    val c2 = Comment(2,1, "B", 1)
+
+    c1.plus(c2)
+
+    c1 + c2
+
+
 }
