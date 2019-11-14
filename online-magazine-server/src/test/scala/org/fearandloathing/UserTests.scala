@@ -31,7 +31,7 @@ class UserTests {
     headers.setContentType(MediaType.APPLICATION_JSON)
     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON))
     val user = new Users
-    user.setId(101)
+    user.setId(101L)
     user.setUsername("Test")
     user.setPassword("Test")
     user.setEnabled(true)

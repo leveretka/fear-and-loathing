@@ -1,8 +1,13 @@
 package org.fearandloathing.dto
 
-import org.fearandloathing.entity.{Articles, Comments, Users}
+import java.util.concurrent.CompletableFuture
+
+import org.fearandloathing.entity.{Articles, Comments, CommentsKt, Users}
 
 import scala.beans.BeanProperty
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.jdk.javaapi.FutureConverters
 
 trait Convertable[A,B] {
   def convert(a: A): B
@@ -94,6 +99,12 @@ class CommentContainer[C <: Comment](c: C) {
 
 trait A {
   def a(): String
+
+  def b(): Future[String] = Future.apply("Hello!")
+
+  def c(): CompletableFuture[String] = CommentsKt.doSthAsync()
+
+  def d() = FutureConverters.asScala(CommentsKt.doSthAsync())
 }
 
 class SuperExtendedComment extends Comment(0,0,"", 0) with A {

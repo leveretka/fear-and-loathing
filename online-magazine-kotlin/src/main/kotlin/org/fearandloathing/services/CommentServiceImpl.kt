@@ -1,13 +1,19 @@
 package org.fearandloathing.services
 
+import org.fearandloathing.dto.Article
 import org.fearandloathing.dto.Comment
 import org.fearandloathing.dto.`Convertable$`.`MODULE$` as convertable
 import org.fearandloathing.entity.Comments
 import org.fearandloathing.repositories.CommentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import scala.Function1
+import scala.Option
 
 import scala.collection.JavaConverters.asJavaIterableConverter
+import scala.runtime.AbstractFunction1
+
+val EMPTY_ARTICLE = Article(0, "", "", 0)
 
 @Service
 class CommentServiceImpl(@Autowired private val commentRepository: CommentRepository,
@@ -26,11 +32,12 @@ class CommentServiceImpl(@Autowired private val commentRepository: CommentReposi
         commentRepository.findCommentsByAuthor(userId).map { toCommentDto(it) }
 
     override fun searchComments(title: String): Iterable<Comment> {
-        val article = articleService.searchArticles(title).find {it.title == title}
-        //val articles = asJavaIterableConverter(articleService.searchArticles(title)).asJava()
+        val articles = asJavaIterableConverter(articleService.searchArticles(title)).asJava()
+
+        val article = articles.find {it.title == title} ?: EMPTY_ARTICLE
 
         return commentRepository.findCommentsByArticle(
-                article.map { it.id }.getOrElse { 0L }
+                article.id
         ).map { toCommentDto(it) }
     }
 
