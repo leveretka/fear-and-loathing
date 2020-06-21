@@ -1,6 +1,8 @@
 package org.fearandloathing.services
 
-import org.fearandloathing.dto.Convertable._
+import java.util.Optional
+
+import org.fearandloathing.dto.Converter._
 import org.fearandloathing.dto.User
 import org.fearandloathing.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +15,7 @@ trait UserService {
 
   def listUsers(): Iterable[User]
 
-  def getUser(id: Long): User
+  def getUser(id: Long): Optional[User]
 
   def getUserByName(name: String): User
 
@@ -29,8 +31,8 @@ class UserServiceImpl(@Autowired private val userRepository: UserRepository) ext
 
   @PreAuthorize("hasRole('user')")
   @PostAuthorize("returnObject.username==principal.username || hasRole('admin')")
-  def getUser(id: Long): User = {
-    convert(userRepository.findOne(id))
+  def getUser(id: Long): Optional[User] = {
+    userRepository.findById(id).map(convert(_))
   }
 
   @PreAuthorize("hasRole('user')")

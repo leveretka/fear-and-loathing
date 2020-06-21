@@ -1,7 +1,6 @@
 package org.fearandloathing.entity
 
 import java.io.Serializable
-import java.lang.Long
 
 import javax.persistence._
 
@@ -13,7 +12,7 @@ class Users extends Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @BeanProperty
-  var id: Long = _
+  var id: java.lang.Long = _
 
   @BeanProperty
   @Column(name = "username")

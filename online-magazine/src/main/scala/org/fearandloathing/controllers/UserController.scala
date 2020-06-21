@@ -1,6 +1,7 @@
 package org.fearandloathing.controllers
 
-import java.lang.Iterable
+import java.util
+import java.util.Optional
 
 import javax.sql.DataSource
 import org.fearandloathing.dto.User
@@ -9,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpHeaders, HttpStatus, ResponseEntity}
 import org.springframework.web.bind.annotation._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 @RestController
 @RequestMapping(path = Array("/api"))
 class UserController(@Autowired private val userService: UserService, @Autowired private val dataSource: DataSource) {
 
   @GetMapping(path = Array("/users"))
-  def getAllUsers: Iterable[User] = {
+  def getAllUsers: util.List[User] = {
     userService.listUsers().toList.asJava
   }
   
   @GetMapping(path = Array("/users/{id}"))
-  def getUser(@PathVariable id: Long): User = {
+  def getUser(@PathVariable id: Long): Optional[User] = {
     userService.getUser(id)
   }
 

@@ -1,6 +1,7 @@
 package org.fearandloathing.controllers
 
-import java.lang.Iterable
+import java.lang
+import java.util.Optional
 
 import javax.sql.DataSource
 import org.fearandloathing.dto.Article
@@ -10,7 +11,7 @@ import org.springframework.http.{HttpHeaders, HttpStatus, ResponseEntity}
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 @RestController
 @RequestMapping(path = Array("/api"))
@@ -21,7 +22,7 @@ class ArticleController (@Autowired private val articleService: ArticleService,
   @GetMapping(path = Array("/articles"))
   def getAllArticle(@RequestParam(required = false) author: String,
                     @RequestParam(required = false) search: String
-                   ): Iterable[Article] = {
+                   ): lang.Iterable[Article] = {
     val articles = author match {
       case null => articleService.listArticles()
       case x: String => articleService.allArticlesOfUser(x.toLong)
@@ -36,17 +37,17 @@ class ArticleController (@Autowired private val articleService: ArticleService,
   }
 
   @GetMapping(path = Array("/articles/{id}"))
-  def getArticle(@PathVariable id: Long): Article = {
+  def getArticle(@PathVariable id: Long): Optional[Article] = {
     articleService.getArticle(id)
   }
 
   @GetMapping(path = Array("/articles/title/{title}"))
-  def getArticlesByTitle(@PathVariable title: String): Iterable[Article] = {
+  def getArticlesByTitle(@PathVariable title: String): lang.Iterable[Article] = {
     articleService.searchArticles(title).asJava
   }
 
   @GetMapping(path = Array("/articles/author/{author}"))
-  def getArticlesByTitle(@PathVariable author: Long): Iterable[Article] = {
+  def getArticlesByTitle(@PathVariable author: Long): lang.Iterable[Article] = {
     articleService.allArticlesOfUser(author).asJava
   }
 

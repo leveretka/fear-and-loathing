@@ -1,12 +1,11 @@
 package org.fearandloathing.repositories
 
-import org.springframework.stereotype.Repository
 import org.fearandloathing.entity.Users
 import org.springframework.data.repository.CrudRepository
-import java.lang.Long
+import org.springframework.stereotype.Repository
 
 @Repository
-trait UserRepository extends CrudRepository[Users, Long] {
+trait UserRepository extends CrudRepository[Users, java.lang.Long] {
 
   def findUserByUsername(username: String): Users
 

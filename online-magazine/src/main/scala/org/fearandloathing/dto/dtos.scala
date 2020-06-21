@@ -4,76 +4,64 @@ import org.fearandloathing.entity.{Articles, Comments, Users}
 
 import scala.beans.BeanProperty
 
-trait Convertable[A,B] {
+trait Converter[A,B] {
   def convert(a: A): B
 }
 
-object Convertable {
-  def convert[A,B](a: A)(implicit c: Convertable[A,B]): B = c.convert(a)
+object Converter {
+  def convert[A,B](a: A)(implicit c: Converter[A,B]): B = c.convert(a)
 
-  implicit val convertUserDto: Convertable[User, Users] =
-    new Convertable[User, Users] {
-      def convert(u: User): Users = {
-        val users = new Users()
-        users.id = u.id
-        users.username = u.username
-        users.password = u.password
-        users.enabled = u.enabled
-        users
-      }
+  implicit val convertUserDto: Converter[User, Users] =
+    (u: User) => {
+      val users = new Users()
+      users.id = u.id
+      users.username = u.username
+      users.password = u.password
+      users.enabled = u.enabled
+      users
     }
 
-  implicit val convertArticleDto: Convertable[Article, Articles] =
-    new Convertable[Article, Articles] {
-      def convert(a: Article): Articles = {
-        val articles = new Articles()
-        articles.id = a.id
-        articles.title = a.title
-        articles.body = a.body
-        articles.author = a.author
-        articles
-      }
+  implicit val convertArticleDto: Converter[Article, Articles] =
+    (a: Article) => {
+      val articles = new Articles()
+      articles.id = a.id
+      articles.title = a.title
+      articles.body = a.body
+      articles.author = a.author
+      articles
     }
 
-  implicit val convertCommentDto: Convertable[Comment, Comments] =
-    new Convertable[Comment, Comments] {
-      def convert(c: Comment): Comments = {
-        val comments = new Comments()
-        comments.setId(c.id)
-        comments.setArticle(c.article)
-        comments.setBody(c.body)
-        comments.setAuthor(c.author)
-        comments
-      }
+  implicit val convertCommentDto: Converter[Comment, Comments] =
+    (c: Comment) => {
+      val comments = new Comments()
+      comments.setId(c.id)
+      comments.setArticle(c.article)
+      comments.setBody(c.body)
+      comments.setAuthor(c.author)
+      comments
     }
 
-  implicit val convertUserEntity: Convertable[Users, User] =
-    new Convertable[Users, User] {
-      def convert(u: Users): User = User(u.id, u.username, u.password, u.enabled)
-    }
+  implicit val convertUserEntity: Converter[Users, User] =
+    (u: Users) => User(u.id, u.username, u.password, u.enabled)
 
-  implicit val convertArticleEntity: Convertable[Articles, Article] =
-    new Convertable[Articles, Article] {
-      def convert(a: Articles): Article = Article(a.id, a.title, a.body, a.author)
-    }
+  implicit val convertArticleEntity: Converter[Articles, Article] =
+    (a: Articles) => Article(a.id, a.title, a.body, a.author)
 
-  implicit val convertCommentEntity: Convertable[Comments, Comment] =
-    new Convertable[Comments, Comment] {
-      def convert(c: Comments): Comment = Comment(c.getId, c.getArticle, c.getBody, c.getAuthor)
-    }
+  implicit val convertCommentEntity: Converter[Comments, Comment] =
+    (c: Comments) => Comment(c.getId, c.getArticle, c.getBody, c.getAuthor)
 }
 
-case class User(@BeanProperty id: Long,
+case class User(@BeanProperty id: java.lang.Long,
                 @BeanProperty username: String,
                 @BeanProperty password: String,
                 @BeanProperty enabled: Boolean)
 
-case class Article(@BeanProperty id: Long,
+case class Article(@BeanProperty id: java.lang.Long,
                    @BeanProperty title: String,
                    @BeanProperty body: String,
-                   @BeanProperty author: Long)
+                   @BeanProperty author: java.lang.Long)
 
-case class Comment(@BeanProperty id: Long,
-                   @BeanProperty article: Long,
+case class Comment(@BeanProperty id: java.lang.Long,
+                   @BeanProperty article: java.lang.Long,
                    @BeanProperty body: String,
-                   @BeanProperty author: Long)
+                   @BeanProperty author: java.lang.Long)

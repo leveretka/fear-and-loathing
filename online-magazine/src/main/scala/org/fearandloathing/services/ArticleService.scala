@@ -1,17 +1,19 @@
 package org.fearandloathing.services
 
+import java.util.Optional
+
 import org.fearandloathing.dto.Article
-import org.fearandloathing.dto.Convertable._
+import org.fearandloathing.dto.Converter._
 import org.fearandloathing.repositories.ArticleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 trait ArticleService {
   def listArticles(): Iterable[Article]
-  def getArticle(id: Long): Article
+  def getArticle(id: Long): Optional[Article]
   def createArticle(article: Article): Long
   def allArticlesOfUser(userId: Long): Iterable[Article]
   def searchArticles(title: String): Iterable[Article]
@@ -26,8 +28,8 @@ class ArticleServiceImpl(@Autowired private val articleRepository: ArticleReposi
   }
 
   @PreAuthorize("hasRole('user')")
-  def getArticle(id: Long): Article = {
-    convert(articleRepository.findOne(id))
+  def getArticle(id: Long): Optional[Article] = {
+    articleRepository.findById(id).map(convert(_))
   }
 
   @PreAuthorize("hasRole('user')")

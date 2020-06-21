@@ -9,7 +9,7 @@ import org.h2.server.web.WebServlet
 class H2Config {
 
   @Bean
-  def h2servletRegistration(): ServletRegistrationBean = {
+  def h2servletRegistration(): ServletRegistrationBean[WebServlet] = {
     val registrationBean = new ServletRegistrationBean(new WebServlet)
     registrationBean.addUrlMappings("/console/*")
     registrationBean
